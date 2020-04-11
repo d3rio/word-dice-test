@@ -9,12 +9,17 @@ from nltk import word_tokenize
 import numpy as np
 from scipy.stats import chi2
 from tabulate import tabulate
+import matplotlib.pyplot as plt
 
 # get book from Project Gutenberg
 url = "http://www.gutenberg.org/files/2554/2554-0.txt" # Crime and Punishment
+title = "Crime and Punishment"
 #url = "https://www.gutenberg.org/files/1342/1342-0.txt" # Pride and Prejudice
+#title = "Pride and Predudice"
 #url = "https://www.gutenberg.org/files/84/84-0.txt" # Frankenstein
+#title = "Frankenstein"
 #url = "https://www.gutenberg.org/files/98/98-0.txt" # A Tale of Two Cities
+#title = "A Tale of Two Cities"
 
 response = request.urlopen(url)
 raw = response.read().decode('utf-8-sig')
@@ -79,6 +84,23 @@ methodName = ['mod(N,6) method','mod(N,9) method','rand function']
 confLim = np.array([0.5,0.9,0.99,0.999,0.9999])
 confVal = chi2.ppf(confLim,5)
 
+# print results to screen in bar plot
+n_groups = 6
+fig, ax = plt.subplots()
+index = np.arange(n_groups)
+bar_width = 0.25
+opacity = 0.5
+rects1 = plt.bar(index, mod6Num, bar_width, alpha=opacity, color='b', label='mod(N,6)')
+rects2 = plt.bar(index+bar_width, mod9Num, bar_width, alpha=opacity, color='g', label='mod(N,9)')
+rects3 = plt.bar(index+2*bar_width, randNum, bar_width, alpha=opacity, color='r', label='rand()')
+plt.xlabel('number rolled')
+plt.ylabel('number of times rolled')
+plt.title('Words in {}'.format(title))
+plt.xticks(index+bar_width, ('1','2','3','4','5','6'))
+plt.legend(loc='lower right')
+plt.tight_layout()
+plt.show()
+
 # print results to screen as table
 arr1 = [methodName[0]]
 arr1.extend(mod6Num.tolist())
@@ -87,7 +109,7 @@ arr2.extend(mod9Num.tolist())
 arr3 = [methodName[2]]
 arr3.extend(randNum.tolist())
 tableDat = [arr1,arr2,arr3]
-print('Book has {:d} words'.format(len(filt_words)))
+print('{} has {:d} words'.format(title,len(filt_words)))
 print('')
 print(tabulate(tableDat, headers = ['method',1,2,3,4,5,6]))
 print('')
