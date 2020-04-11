@@ -12,14 +12,16 @@ from tabulate import tabulate
 import matplotlib.pyplot as plt
 
 # get book from Project Gutenberg
-url = "http://www.gutenberg.org/files/2554/2554-0.txt" # Crime and Punishment
-title = "Crime and Punishment"
+#url = "http://www.gutenberg.org/files/2554/2554-0.txt" # Crime and Punishment
+#title = "Crime and Punishment"
 #url = "https://www.gutenberg.org/files/1342/1342-0.txt" # Pride and Prejudice
 #title = "Pride and Predudice"
 #url = "https://www.gutenberg.org/files/84/84-0.txt" # Frankenstein
 #title = "Frankenstein"
 #url = "https://www.gutenberg.org/files/98/98-0.txt" # A Tale of Two Cities
 #title = "A Tale of Two Cities"
+url = "https://www.gutenberg.org/files/4300/4300-0.txt"
+title = "Ulysses"
 
 response = request.urlopen(url)
 raw = response.read().decode('utf-8-sig')
@@ -109,7 +111,7 @@ arr2.extend(mod9Num.tolist())
 arr3 = [methodName[2]]
 arr3.extend(randNum.tolist())
 tableDat = [arr1,arr2,arr3]
-print('{} has {:d} words'.format(title,len(filt_words)))
+print('{} has {:d} unique words'.format(title,len(uniq_words)))
 print('')
 print(tabulate(tableDat, headers = ['method',1,2,3,4,5,6]))
 print('')
