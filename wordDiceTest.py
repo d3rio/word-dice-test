@@ -24,13 +24,16 @@ tokens = word_tokenize(raw)
 filt_words = [w.lower() for w in tokens if w.isalpha()]
 # filter out all words length 2 or less
 filt_words = [w for w in filt_words if len(w)>2]
+# filter out all repeats of the same word
+uniq_words = []
+[uniq_words.append(w) for w in filt_words if w not in uniq_words]
     
 mod9List = []
 mod6List = []
 
-for I in range(len(filt_words)):
+for I in range(len(uniq_words)):
 #for I in range(1000):
-    word = filt_words[I]
+    word = uniq_words[I]
     sum = 0
     for J in range(len(word)):
         sum = sum + ord(word[J])-96
@@ -73,7 +76,7 @@ SSE = [SSE6,SSE9,SSErand]
 methodName = ['mod(N,6) method','mod(N,9) method','rand function']
 
 # calculate confidence critical value
-confLim = 0.9999
+confLim = np.array([0.5,0.9,0.99,0.999,0.9999])
 confVal = chi2.ppf(confLim,5)
 
 # print results to screen as table
@@ -90,10 +93,12 @@ print(tabulate(tableDat, headers = ['method',1,2,3,4,5,6]))
 print('')
 for I in range(len(SSE)):
     print('Normalized sum of squared error (SSE) for {} = {:5g}'.format(methodName[I],SSE[I]))
-print('Critical value of chi-squared distribution for 99.99% confidence level = {:5g}'.format(confVal))
 print('')
-for I in range(len(SSE)):
-    if SSE[I]>confVal:
-        printstr = '{} SSE is greater than critical value, {:5g}% confidence level that numbers are not distributed randomly'
-        print(printstr.format(methodName[I],100*confLim))
+
+for J in range(len(confLim)):
+    print('Critical value of chi-squared distribution for {:5g}% confidence level = {:5g}'.format(100*confLim[J],confVal[J]))
+    for I in range(len(SSE)):
+        if SSE[I]>confVal[J]:
+            printstr = '{} SSE is greater than critical value, {:5g}% confidence level that numbers are not distributed randomly'
+            print(printstr.format(methodName[I],100*confLim[J]))
         
