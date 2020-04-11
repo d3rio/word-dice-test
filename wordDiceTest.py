@@ -2,7 +2,7 @@
 """
 Created on Fri Apr 10 14:29:31 2020
 
-@author: derio
+@author: d3rio
 """
 from urllib import request
 from nltk import word_tokenize
@@ -95,8 +95,5 @@ print('')
 for I in range(len(SSE)):
     if SSE[I]>confVal:
         printstr = '{} SSE is greater than critical value, {:5g}% confidence level that numbers are not distributed randomly'
-        print(printstr.format(methodName[I],100*confLim))
-    else:
-        printstr = '{} SSE is less than critical value, {:5g}% confidence level that numbers are distributed randomly'
         print(printstr.format(methodName[I],100*confLim))
         
